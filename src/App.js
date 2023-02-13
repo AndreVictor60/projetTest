@@ -22,7 +22,7 @@ function App() {
     if (search_params.has("d")) {
       let nameParam = search_params.get("d");
       let newStr = nameParam.replace("C", "");
-      let temperature = parseInt(newStr) / 10 - 40;
+      let temperature = Math.round((parseInt(newStr) / 10 - 40 )* 100) / 100;
       setTemperature(temperature);
     } else {
       setTemperature("Introuvable");
