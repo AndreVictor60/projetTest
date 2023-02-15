@@ -54,7 +54,7 @@ const Home = () => {
     if (id || temperature || hash) {
       await axios({
         method: "post",
-        url: `http://localhost:5000/api/temperature/save`,
+        url: `${process.env.REACT_APP_API_URL}/api/temperature/save`,
         data: {
           id,
           temperature,
