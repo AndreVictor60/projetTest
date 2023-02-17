@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogsById } from "../../actions/logs.actions";
 import { dateParser, isEmpty, timeParser } from "../../assets/utils";
@@ -16,7 +16,6 @@ const LogTemperature = (props) => {
       dispatch(getLogsById(idTest));
       setLoadLogs(false);
     }
-    
   }, [dispatch, loadLogs]);
 
   const getId = () => {
@@ -29,11 +28,11 @@ const LogTemperature = (props) => {
     return nameParam;
   };
 
-
-
   return (
     <>
-      <h2><BsCardChecklist /> Log de la température</h2>
+      <h2>
+        <BsCardChecklist /> Log de la température
+      </h2>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -43,22 +42,32 @@ const LogTemperature = (props) => {
           </tr>
         </thead>
         <tbody>
-        {!isEmpty(logs[0]) ?
-          logs.map((log) => {
-            return (
+          {loadLogs ? (
+              <tr>
+                <td rowSpan="4" colSpan="4">
+                  <div className="text-center py-5">
+                      <Spinner animation="border" />
+                  </div>
+                </td>
+              </tr>
+          ) : !isEmpty(logs[0]) ? (
+            
+            logs.map((log) => {
+              return (
                 <tr key={log._id}>
-                    <td>{dateParser(log.createdAt)}</td>
-                    <td>{timeParser(log.createdAt)}</td>
-                    <td>{log.temperature} °C</td>
+                  <td>{dateParser(log.createdAt)}</td>
+                  <td>{timeParser(log.createdAt)}</td>
+                  <td>{log.temperature} °C</td>
                 </tr>
-            );
-          }) :
-          (
+              );
+            })
+          ) : (
             <tr>
-                <td className="text-center fw-bold fst-italic" colSpan={3}>Aucune donnée trouvable</td>
+              <td className="text-center fw-bold fst-italic" colSpan={3}>
+                Aucune donnée trouvable
+              </td>
             </tr>
           )}
-
         </tbody>
       </Table>
     </>
